@@ -1,0 +1,35 @@
+# Libraries
+add_subdirectory(Compan_logger)
+add_subdirectory(company_ref_protocol)
+add_subdirectory(company_ref_protocol_utils)
+add_subdirectory(company_ref_utils)
+add_subdirectory(company_ref_variant_valuestore)
+add_subdirectory(company_ref_dmo)
+add_subdirectory(company_ref_main_apps)
+add_subdirectory(dmo_tools_utils)
+
+# DMO tools - required prior to other libraries
+add_subdirectory(dmo_from_ini)
+add_subdirectory(dmo_merge)
+add_subdirectory(dmo_show)
+add_subdirectory(dmo_from_trxml)
+add_subdirectory(dmoc)
+
+add_subdirectory(company_ref_sdk_value_ids)
+add_subdirectory(company_ref_dynamic_dmo)
+add_subdirectory(company_ref_asio)
+add_subdirectory(company_ref_asio_protocol_server)
+add_subdirectory(company_ref_asio_protocol_client)
+add_subdirectory(company_ref_boost_server)
+add_subdirectory(company_ref_boost_client)
+add_subdirectory(company_ref_microservice)
+
+# Applications
+add_subdirectory(company_ref_cli)
+add_subdirectory(company_ref_ws)
+add_subdirectory(company_ref_ms_example)
+add_subdirectory(company_ref_persistor)
+add_subdirectory(company_ref_ms_manager)
+add_subdirectory(company_ref_tcpserver)
+
+add_subdirectory(company_ref_ms_test)

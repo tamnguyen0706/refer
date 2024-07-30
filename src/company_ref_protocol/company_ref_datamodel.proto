@@ -1,0 +1,88 @@
+syntax = "proto3";
+option optimize_for = LITE_RUNTIME;
+
+import "company_ref_protocol.proto";
+
+package CompanEdgeDataModel;
+
+
+//	MetaData Type Definitions is a mechanism to declare
+//	a set of values that are contained as members of containers.
+//
+//	The following CompanValueTypes are supported:
+//		MapValue, SetValue 
+//	
+//	The concept of the type definition is to declare structured 
+//	information which can be used to instantiate "instance" data.
+//
+//  This is similar to what c++ does for containers
+//
+//  	struct data_type {
+//  		int 		intValue;
+//  		std::string strValue;
+//  		double 		dblValue;
+//  	}
+// 		std::map<key,data_type>	myMap;
+//		std::set<key,int>		mySet;
+//
+//	The ContainerTypeDefs.parent_id should contain the FQVID of the object it is
+//	representing. Most cases, this will simply be as follows: 
+//		device.ethernet.interface [MapValue]
+//		hardware.cpu			  [StructValue]
+//	
+//	In the case of maps embedded within maps, for instance:
+//		"map_a.{i}.map_b", the parent_id should be expressed as "map_a.+.map_b"
+//
+// 	The '.+.' key is the signifier that it is part of a embedded MapValue 
+//	 
+//	Each Value stored in the repeated ContainerTypeDefs.members field requires the 
+//	Value.id field to have the member value identifier as the leaf, for instance:
+//	
+//	Value.id = "intValue"
+//	Value.id = "strValue"
+//	Value.id = "dblValue"
+//
+//	In the value store, the base container type exists as the parent node: 
+//		Compan.edge.myMap [MapValue]
+//
+//	When a AddToContainer message is received, the AddToContainer.key value is used to create a new set 
+//	of entries based on the ContainerTypeDefs.member definitions
+//	
+//		Compan.edge.myMap.[key].intValue
+//		Compan.edge.myMap.[key].strValue
+//		Compan.edge.myMap.[key].dblValue
+//	
+message MetaDataTypeDefs {
+	string				 			parent_id		= 1;
+	bool				 			auto_id_integer	= 2;
+	repeated CompanEdgeProtocol.Value members			= 3;
+}
+
+//	It is presumed that the ContainerDefs as a whole will be store in memory so that AddToContainer messages have
+//	all the required fields available to populate an entry 
+message MetaDataDefs {
+	repeated MetaDataTypeDefs	metaDataTypeDefs	= 1;
+}
+
+// The DataModelMessage is the message that is serialized to disk to load and store
+//	the data model definitions.
+//
+//  DataModelMessage.dataEntities contains singular value entries in the data model:
+//		system									- StructValue
+//		system.deviceInfo						- StructValue
+//		system.deviceInfo.status			  	- StructValue
+// 		system.deviceinfo.status.serialnumber 	- StringValue
+//		Compan									- StructValue
+//		Compan.network						    - StructValue
+//		Compan.network.interfaces 				- MapValue
+
+//  
+//	DataModelMessage.containerDefs contains the type definitions for container elements
+//		Compan.network.interfaces
+//			Compan.network.interfaces				- IPv4Value
+
+message DataModelMessage {
+
+	CompanEdgeProtocol.ValueChanged	dataEntities = 1;
+	MetaDataDefs					metaDataDefs = 2;
+}

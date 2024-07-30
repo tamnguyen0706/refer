@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dm:document>
+
+<dataType name="IPAddress">
+	<string>
+		<size maxLength="45"/>
+	</string>
+</dataType>
+
+  <dataType name="EnumType">
+    <string>
+      <enumeration value="None" access="readOnly"/>
+      <enumeration value="One"/>
+      <enumeration value="Two" optional="true"/>
+      <enumeration value="Three" access="readOnly"/>
+      <enumeration value="Four" access="readOnly" optional="true"/>
+    </string>
+  </dataType>
+
+
+<model name="modelName">
+	<object name="modelName.config." access="readOnly" minEntries="1" maxEntries="1">
+		<parameter name="BoolValue" access="readWrite">
+			<syntax>
+				<boolean/>
+			</syntax>
+		</parameter>
+		<parameter name="StringValue" access="readWrite">
+			<syntax>
+				<string>
+					<size maxLength="256"/>
+					<pathRef refType="weak" targetType="row"/>
+				</string>
+			</syntax>
+		</parameter>
+		<parameter name="IpValue" access="readWrite">
+			<syntax>
+				<dataType ref="IPAddress"/>
+			</syntax>
+		</parameter>
+		<parameter name="UnsignedIntValue" access="readWrite">
+			<syntax>
+				<unsignedInt/>
+			</syntax>
+		</parameter>
+		<parameter name="DateTimeValue" access="readOnly" activeNotify="canDeny">
+			<syntax>
+				<dateTime/>
+			</syntax>
+		</parameter>
+		<parameter name="EnumValue">
+			<syntax>
+				<string>
+					<enumeration value="Zero" access="readOnly"/>
+					<enumeration value="1"/>
+					<enumeration value="T wo" optional="true"/>
+				</string>
+			</syntax>
+		</parameter>
+
+		<parameter name="EnumDataRefValue">
+			<syntax>
+				<dataType ref="EnumType">
+					<enumeration value="None" access="readOnly"/>
+					<enumeration value="One"/>
+					<enumeration value="Two" optional="true"/>
+					<enumeration value="Three" access="readOnly"/>
+					<enumeration value="Four" access="readOnly" optional="true"/>
+					<enumeration value="Five" access="readOnly" optional="true"/>
+					<enumeration value="Six" access="readOnly" optional="true"/>
+				</dataType>
+			</syntax>
+		</parameter>
+		
+	</object>
+</model>
+</dm:document>

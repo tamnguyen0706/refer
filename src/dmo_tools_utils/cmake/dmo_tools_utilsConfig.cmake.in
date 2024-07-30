@@ -1,0 +1,33 @@
+include(CMakeFindDependencyMacro)
+
+get_filename_component(dmo_tools_utils_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+
+list(APPEND CMAKE_MODULE_PATH ${dmo_tools_utils_CMAKE_DIR})
+
+if(NOT TARGET Compan::company_ref_protocol)
+	find_package(company_ref_protocol)
+endif()
+
+if(NOT TARGET Compan::company_ref_protocol_utils)
+	find_package(company_ref_protocol_utils)
+endif()
+
+if(NOT TARGET Compan::company_ref_variant_valuestore)
+	find_package(company_ref_variant_valuestore)
+endif()
+
+if(NOT TARGET Compan::company_ref_dmo)
+	find_package(company_ref_dmo)
+endif()
+
+if(NOT TARGET Compan::company_ref_utils)
+	find_package(company_ref_utils)
+endif()
+
+if(NOT TARGET Compan::Compan_logger)
+	find_package(Compan_logger)
+endif()
+
+if(NOT TARGET dmo_tools_utils)
+    include("${dmo_tools_utils_CMAKE_DIR}/dmo_tools_utilsTargets.cmake")
+endif()

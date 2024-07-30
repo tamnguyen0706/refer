@@ -1,0 +1,21 @@
+include(CMakeFindDependencyMacro)
+
+get_filename_component(company_ref_protocol_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+
+list(APPEND CMAKE_MODULE_PATH ${company_ref_protocol_CMAKE_DIR})
+
+if(NOT Protobuf_FOUND)
+find_package(Protobuf 3.6 REQUIRED)
+endif()
+
+if(NOT absl_FOUND)
+find_package(absl CONFIG)
+endif()
+
+if(${absl_FOUND})
+find_package(utf8_range)
+endif()
+
+if(NOT TARGET Compan::company_ref_protocol)
+    include("${company_ref_protocol_CMAKE_DIR}/company_ref_protocolTargets.cmake")
+endif()

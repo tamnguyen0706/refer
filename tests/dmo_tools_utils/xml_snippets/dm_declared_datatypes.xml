@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dm:document>
+
+<dataType name="CommonType">
+	<string>
+		<size maxLength="64"/>
+	</string>
+</dataType>
+
+<dataType name="CommonDerived" base="CommonType">
+	<size maxLength="64"/>
+</dataType>
+
+<dataType name="CommonDoubleDerived" base="CommonDerived">
+	<size maxLength="64"/>
+</dataType>
+
+<dataType name="PatternAttrib">
+	<string>
+		<pattern value="([0-9A-Fa-f][0-9A-Fa-f]:){7}([0-9A-Fa-f][0-9A-Fa-f])"/>
+	</string>
+</dataType>  
+
+<dataType name="Int">
+	<int>
+	</int>
+</dataType>
+
+<dataType name="UnsignedInt">
+	<unsignedInt>
+	</unsignedInt>
+</dataType>
+
+<dataType name="Long">
+	<long>
+	</long>
+</dataType>
+
+<dataType name="UnsignedLong">
+	<unsignedLong>
+	</unsignedLong>
+</dataType>
+
+<dataType name="RangeMinAttrib">
+	<int>
+		<range minInclusive="100"/>
+	</int>
+</dataType>
+
+<dataType name="RangeMaxAttrib">
+	<int>
+		<range maxInclusive="100"/>
+	</int>
+</dataType>
+
+<dataType name="RangeMinMaxAttrib">
+	<int>
+		<range minInclusive="1" maxInclusive="65535"/>
+	</int>
+</dataType>
+
+<dataType name="EnumType">
+	<string>
+		<enumeration value="Zero" access="readOnly"/>
+		<enumeration value="One"/>
+		<enumeration value="Two" optional="true"/>
+	</string>
+</dataType>
+
+<dataType name="BoolType">
+	<boolean/>
+</dataType>
+
+<dataType name="DateTimeType">
+	<dateTime/>
+</dataType>
+
+<dataType name="HexBinaryType">
+	<hexBinary>
+		<size minLength="3" maxLength="3"/>
+	</hexBinary>
+</dataType>
+
+<dataType name="Base64Type">
+	<base64>
+		<size minLength="0" maxLength="4095"/>
+	</base64>
+</dataType>
+
+<dataType name="DecimalType">
+	<decimal>
+	</decimal>
+</dataType>
+
+<dataType name="ListType">
+	<list/>
+	<string/>
+</dataType>
+
+<dataType name="BadEnumValues">
+	<string>
+		<enumeration value="">
+			<description>{{empty}}</description>
+		</enumeration>
+		<enumeration value="*"/>
+		<enumeration value="Nothing"/>
+	</string>
+</dataType>
+
+</dm:document>

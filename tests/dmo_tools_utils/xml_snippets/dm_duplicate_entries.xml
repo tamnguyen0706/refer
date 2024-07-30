@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dm:document>
+
+<model name="modelName">
+	<object name="modelName.config." access="readOnly" minEntries="1" maxEntries="1">
+		<parameter name="BoolValue" access="readWrite">
+			<syntax>
+				<boolean/>
+			</syntax>
+		</parameter>
+		<parameter name="BoolValue" access="readWrite">
+			<syntax>
+				<boolean/>
+			</syntax>
+		</parameter>
+		<parameter name="BoolValue " access="readWrite">
+			<syntax>
+				<boolean/>
+			</syntax>
+		</parameter>
+	</object>
+	<object name="modelName.config." access="readOnly" minEntries="1" maxEntries="1">
+		<parameter name="BoolValue" access="readWrite">
+			<syntax>
+				<boolean/>
+			</syntax>
+		</parameter>
+	</object>
+</model>
+</dm:document>

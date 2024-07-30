@@ -1,0 +1,325 @@
+syntax = "proto3";
+option optimize_for = LITE_RUNTIME;
+
+import "Compan.proto";
+
+package CompanEdgeProtocol;
+
+enum Value_Type {
+    Unset       = 0;
+    Unknown     = 1;
+    Bool        = 2;
+    Text        = 3;
+    Interval    = 4;
+    Enum        = 5;
+    UInterval   = 6;
+    ULLInterval = 7;
+    Udid        = 8;
+    LLInterval  = 9;
+    SInterval   = 10;
+    USInterval  = 11;
+    IPv4        = 12;
+    EUI48       = 13;
+    IPv6        = 14;
+    Multi       = 15;
+    DInterval   = 16;
+    Container   = 17;
+    ContainerAddTo      = 18;
+    ContainerRemoveFrom = 19;
+    Struct      = 20;
+    TimeVal     = 21;
+    TimeSpec    = 22;
+    Set         = 23;
+    UnorderedSet= 24;
+    Vector      = 25;
+};
+
+message Value {
+    reserved 100;
+
+    string id = 1;
+    Value_Type type = 2;
+    CompanValueTypes.UnknownValue unknownValue = 3;
+    CompanValueTypes.BoolValue boolValue = 4;
+    CompanValueTypes.TextValue textValue = 5;
+    CompanValueTypes.IntervalValue intervalValue = 6;
+    CompanValueTypes.EnumValue enumValue = 7;
+    CompanValueTypes.UIntervalValue uIntervalValue = 8;
+    CompanValueTypes.ULLIntervalValue ullIntervalValue = 9;
+    CompanValueTypes.UdidValue udidValue = 10;
+    CompanValueTypes.LLIntervalValue llIntervalValue = 11;
+    CompanValueTypes.SIntervalValue sIntervalValue = 12;
+    CompanValueTypes.USIntervalValue usIntervalValue = 13;
+    enum Access {
+        AccessUnset = 0;
+        ReadWrite   = 1;
+        ReadOnly    = 2;
+        WriteOnce   = 3;
+    };
+    // Defaults to ReadWrite - so if not set assume ReadWrite
+    Access access = 14;
+    enum Kind {
+        KindUnset = 0;
+        Default   = 1;
+        Hex       = 2;
+        Trigger   = 3;
+    };
+    Kind kind = 15;
+    CompanValueTypes.IPv4Value ipv4Value = 16;
+    CompanValueTypes.EUI48Value eui48Value = 17;
+    CompanValueTypes.IPv6Value ipv6Value = 18;
+    CompanValueTypes.MultiValue multiValue = 19;
+    CompanValueTypes.DIntervalValue dIntervalValue = 20;
+    CompanValueTypes.AddToContainer addToContainer = 21;
+    CompanValueTypes.RemoveFromContainer removeFromContainer = 22;
+    CompanValueTypes.TimeValValue timeValValue = 23;
+    CompanValueTypes.TimeSpecValue timeSpecValue = 24;
+    CompanValueTypes.SetValue setValue = 25;
+    CompanValueTypes.UnorderedSetValue unorderedSetValue = 26;
+    CompanValueTypes.VectorValue vectorValue = 27;
+
+    uint64 hashToken = 101;
+}
+
+// ValueChanged messages are bi-directional events for notification of either a
+//	change in the value's attributes or data, as well as a notification for
+//	when a value is added by the server
+//
+message ValueChanged {
+    repeated Value value = 1;
+}
+
+// ValueRemoved messages are events sent from the server to notify that a value
+//	is being removed
+//
+message ValueRemoved {
+    repeated string id        = 1;
+    repeated uint64 hashtoken = 2;
+}
+
+// VsSync message is sent from the client to the server to request
+//	either a specific set of value ids, or the global list of values
+//	available.
+//
+// Subscription to a specific set of value ids will allow for future
+//	Change and Remove notifications for the specified set of values
+//
+// Subscription to the global list of values will allow for future
+//	Add, Change and Remove notifications for all values
+//
+// The response for this message is VsSyncCompleted
+//
+message VsSync {
+    repeated string ids = 1;
+}
+
+// Defines the services provided by a connection
+enum SyncServiceType
+{
+    reserved 2, 3;
+
+    UnknownServices = 0;
+    ValueStore      = 1;
+
+    All = 100;
+};
+
+// VsSyncCompleted is a server response to denote that a VsSync has completed.
+//	After which, the subscribed value id's will be transmitted via ValueChanged message
+//
+message VsSyncCompleted  {
+    SyncServiceType services = 1;
+}
+
+// VsSubscribe message is sent from the client to the server to request
+//	either a specific set of value ids, or the global list of values
+//	available.
+//
+// Subscription to a specific set of value ids will allow for future
+//	Change and Remove notifications for the specified set of values
+//	It is possible to subscribed to specified set of values at different times
+//
+// Subscription to the global list of values will allow for future
+//	Add, Change and Remove notifications for all values
+//
+// The response for this message is VsResult
+//
+message VsSubscribe {
+    uint32 sequenceNo   = 1;
+    repeated string ids = 2;
+}
+
+// VsUnsubscribe message is sent when the client wants to unsubscribe to all
+//	value notifications
+//
+// It is the client's responsibility to re-subscribe for values
+//
+// The response for this message is VsResult
+//
+message VsUnsubscribe {
+    uint32 sequenceNo = 1;
+}
+
+// VsGetAll message is sent from the client when it wants to retrieve
+//	all the values available without requiring a subscription
+//
+// The response for this message is VsResult
+//
+message VsGetAll {
+    uint32 sequenceNo = 1;
+}
+
+// VsGetValue message is sent from the client when it wants to retrieve
+//	a single value
+//
+// The response for this message is VsResult
+//
+message VsGetValue {
+    uint32 sequenceNo = 1;
+    string id         = 2;
+}
+
+// VsSetValue message is sent from the client when it wants to change
+//	a single value using a string representation of the value's data
+//
+// The response for this message is VsResult
+//
+message VsSetValue {
+    uint32 sequenceNo = 1;
+    string id         = 2;
+    string value      = 3;
+}
+
+// VsGetObject message is sent from the client when it wants to 
+// receive a Value and all of it's children objects
+//
+// The response for this message is VsResult
+//
+message VsGetObject {
+	uint32 sequenceNo = 1;
+	string id		  = 2;
+}
+
+
+// VsResult messages are the response messages for the various Vs(N)
+//	messages which are sent from the client.
+//
+// sequenceNo is not a required field, however, it is helpful if multiple
+//	messages are being sent from the client
+//
+message VsResult {
+    uint32 sequenceNo = 1;
+    enum Status {
+        success = 0;
+        error_not_found = 1;
+        wrong_value_type = 2;
+		range_error = 3;
+        enum_error = 4;
+        access_error = 5;
+
+    };
+    Status status         = 2;
+    repeated Value values = 3;
+}
+
+// VsMultiGet message is sent from the client when it wants to retrieve
+// multiple values
+//
+// The response for this message is VsMultiGetResult
+//
+message VsMultiGet {
+	uint32 sequenceNo = 1;
+	repeated string ids = 2;
+}
+
+// VsMultiSet message is sent from the client when it wants to change
+//	a multiple values using a string representation of the value's data
+//
+// The response for this message is VsMultiSetResult
+//
+message VsMultiSet {
+	uint32 sequenceNo = 1;
+
+	message Value {
+		string id     = 1;
+		string value  = 2;
+	}
+	repeated Value values = 2;
+}
+
+// VsMultiGetResult messages are the response messages VsMultiGet
+//
+// sequenceNo is not a required field, however, it is helpful if multiple
+//	messages are being sent from the client
+//
+message VsMultiGetResult {
+	uint32 sequenceNo = 1;
+	enum ErrorCode {
+		Success = 0;
+		ValueNotFound = 1;
+	}
+	message Result {
+		ErrorCode error = 1;
+		string description = 2;
+		repeated Value values = 3;
+	}
+	repeated Result results = 2;
+}
+
+// VsMultiSetResult messages are the response messages VsMultiSet
+//
+// sequenceNo is not a required field, however, it is helpful if multiple
+//	messages are being sent from the client
+//
+message VsMultiSetResult {
+	uint32 sequenceNo = 1;
+	enum ErrorCode {
+		Success = 0;
+		UnknownError = 1;
+		ValueNotFound = 2;
+	}
+	message Result {
+		ErrorCode error = 1;
+		string description = 2;
+		string id = 3;
+	}
+	repeated Result results = 2;
+}
+
+
+// ServerMessage is a request from the client to the server
+//
+message ServerMessage {
+    reserved 3 to 9, 105, 106, 109 to 110, 999;
+
+    VsSync vsSync = 1;
+    ValueChanged valueChanged = 2;
+
+    VsSubscribe vsSubscribe     = 100;
+    VsUnsubscribe vsUnsubscribe = 101;
+    VsGetAll vsGetAll           = 102;
+    VsGetValue vsGetValue       = 103;
+    VsSetValue vsSetValue       = 104;
+
+    ValueRemoved valueRemoved   = 107;
+	VsGetObject	 vsGetObject = 108;
+    
+    VsMultiGet	vsMultiGet		= 111;
+    VsMultiSet	vsMultiSet		= 112;
+    
+}
+
+// ClientMessage is a response from the server to the client
+//
+message ClientMessage {
+    reserved 3 to 9, 999;
+
+    ValueChanged valueChanged = 1;
+    ValueRemoved valueRemoved = 2;
+
+    VsResult vsResult = 100;
+	VsMultiGetResult vsMultiGetResult = 101;
+	VsMultiSetResult vsMultiSetResult = 102;
+
+    VsSyncCompleted vsSyncCompleted = 1000;
+}

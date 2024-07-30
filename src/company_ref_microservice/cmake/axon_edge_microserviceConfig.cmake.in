@@ -1,0 +1,57 @@
+include(CMakeFindDependencyMacro)
+
+get_filename_component(company_ref_microservice_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+
+list(APPEND CMAKE_MODULE_PATH ${company_ref_microservice_CMAKE_DIR})
+
+if(NOT Protobuf_FOUND)
+find_package(Protobuf 3.6 REQUIRED)
+endif()
+
+if(NOT TARGET Compan::Compan_logger)
+    find_package(Compan_logger)
+endif()
+
+if(NOT TARGET Compan::company_ref_protocol)
+	find_package(company_ref_protocol)
+endif()
+
+if(NOT TARGET Compan::company_ref_protocol_utils)
+	find_package(company_ref_protocol_utils)
+endif()
+
+if(NOT TARGET Compan::company_ref_variant_valuestore)
+    find_package(company_ref_variant_valuestore)
+endif()
+
+if(NOT TARGET Compan::company_ref_boost_client)
+    find_package(company_ref_boost_client)
+endif()
+
+if(NOT TARGET Compan::company_ref_utils)
+    find_package(company_ref_utils)
+endif()
+
+if(NOT TARGET Compan::company_ref_main_apps)
+	find_package(company_ref_main_apps)
+endif()
+
+if(NOT TARGET Compan::company_ref_dmo)
+	find_package(company_ref_dmo)
+endif()
+
+if(NOT TARGET Compan::company_ref_dynamic_dmo)
+	find_package(company_ref_dynamic_dmo)
+endif()
+
+if(NOT TARGET Compan::company_ref_sdk_value_ids)
+	find_package(company_ref_sdk_value_ids)
+endif()
+
+if(NOT TARGET Compan::company_ref_asio_protocol_client)
+	find_package(company_ref_asio_protocol_client)
+endif()
+
+if(NOT TARGET Compan::company_ref_microservice)
+    include("${company_ref_microservice_CMAKE_DIR}/company_ref_microserviceTargets.cmake")
+endif()

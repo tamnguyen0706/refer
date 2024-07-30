@@ -1,4 +1,3 @@
-# CompanEdge SDK
 
 ## Prerequisite
 ### MacOs
@@ -23,10 +22,9 @@ Docker container support by docker engine or docker desktop
 - Docker engine: https://docs.docker.com/engine/install/
 - Docker Desktop: https://docs.docker.com/desktop/
 
+## MacOs Build
+- Build with different toolchain with "buildwrapper.sh" script
+- Build scripts are located at: ./tools/bin/ directory
 
-## Sample scripts
-> Sample scripts location: ./src/sample_test_client_scripts/
-
-## Sample data model for the server to load
-> Sample Variant ValueStore data model file: ./examples/data/sample.ssm
+```
 
